@@ -11,7 +11,7 @@ qpath='data\jacana\Train1-100.Question.POSInput'
 apath1='data\jacana\Train1-100.Positive-J.POSInput'
 apath0='data\jacana\Train1-100.Negative-T.POSInput'
 glovepath='data\glovewiki.txt'
-glovepath2='usedembed.txt'
+glovepath2='data\usedembed.txt'
 
 #Returns single GV from string
 def getGloveVector(string):
@@ -111,15 +111,19 @@ def shortGlove(questions,answers1,answers0):
     
     
     
-def saveArrays(qa,a1a,a0a):
-    np.savetxt('qarray.txt',qa)
-    np.savetxt('a1rray.txt',a1a)
-    np.savetxt('a0rray.txt',a0a)
+def saveArrays(qa,a1a,a0a,ans1,ans0):
+    np.savetxt('data/qarray.txt',qa)
+    np.savetxt('data/a1rray.txt',a1a)
+    np.savetxt('data/a0rray.txt',a0a)
+    np.savetxt('data/ans1.txt',ans1)
+    np.savetxt('data/ans0.txt',ans0)
     return
 
 def loadArrays():
-    qa=np.loadtxt('qarray.txt')
-    a1a=np.loadtxt('a1rray.txt')
-    a0a=np.loadtxt('a0rray.txt')
-    return (qa,a1a,a0a)
+    qa=np.loadtxt('data/qarray.txt')
+    a1a=np.loadtxt('data/a1rray.txt')
+    a0a=np.loadtxt('data/a0rray.txt')
+    ans1=np.loadtxt('data/ans1.txt')
+    ans0=np.loadtxt('data/ans0.txt')
+    return (qa,a1a,a0a,ans1,ans0)
     

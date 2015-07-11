@@ -42,3 +42,6 @@ Network Trash Folder
 Temporary Items
 .apdisk
 data/jacana/pokus.txt
+data/glovewiki.txt
+*.pyc
+untitled0.py
