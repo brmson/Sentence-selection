@@ -6,15 +6,26 @@ Created on Wed Jul 08 18:15:54 2015
 """
 import numpy as np
 
-
-qpath='data\jacana\Train1-100.Question.POSInput'
-apath1='data\jacana\Train1-100.Positive-J.POSInput'
-apath0='data\jacana\Train1-100.Negative-T.POSInput'
-glovepath='data\glovewiki.txt'
-glovepath2='data\usedembed.txt'
-
+TQPATH='data/jacana/Test.Question.POSInput'
+TAPATH1='data/jacana/Test.Positive-J.POSInput'
+TAPATH0='data/jacana/Test.Negative-T.POSInput'
+QPATH='data/jacana/Train1-100.Question.POSInput'
+APATH1='data/jacana/Train1-100.Positive-J.POSInput'
+APATH0='data/jacana/Train1-100.Negative-T.POSInput'
+GLOVEPATH='data/glovewiki.txt'
+GLOVEPATH2='data/tusedembed.txt'
+PTQA='data/tqarray.txt'
+PTA1A='data/ta1rray.txt'
+PTA0A='data/ta0rray.txt'
+PTANS1='data/tans1.txt'
+PTANS0='data/tans0.txt'
+PQA='data/qarray.txt'
+PA1A='data/a1rray.txt'
+PA0A='data/a0rray.txt'
+PANS1='data/ans1.txt'
+PANS0='data/ans0.txt'
 #Returns single GV from string
-def getGloveVector(string):
+def getGloveVector(string,glovepath2):
     with open(glovepath2,'r') as f:
         for line in f:
             word=line.split(' ',1)[0]
@@ -24,7 +35,7 @@ def getGloveVector(string):
     return None
 
 #Returns qa vectors from files with jacana formating
-def arraysFromQA():
+def textArrays(qpath,apath1,apath0):
     questions=[]
     with open(qpath,'r') as f:
         for line in f:
@@ -43,12 +54,9 @@ def arraysFromQA():
                 i+=1
                 x=np.array(line.split(' ')[:-1])
                 answers1.append(x)
-    #            print x
             elif line[0:2]=='</':
                 ans1.append(i)
                 i=0
-                
-                
     answers0=[]
     i=0
     ans0=[]
@@ -62,68 +70,61 @@ def arraysFromQA():
                     i-=1
                 else:
                     answers0.append(x)
-    #            print x
             elif line[0:2]=='</':
                 ans0.append(i)
                 i=0
-                
-
     return (questions,answers1,answers0,ans1,ans0)
 
-
-
 #Creates smaller Glove-vector file with used words only
-def shortGlove(questions,answers1,answers0):                
+def shortGlove(questions,answers1,answers0,glovepath2):                
     i=0
-    words=[]
+    words=set()
     for sentence in questions:
         for word in questions[i]:
             if word not in words:
-                words.append(word)
+                words.add(word)
         i+=1
-                
     i=0       
     for sentence in answers1:
         for word in answers1[i]:
             if word not in words:
-                words.append(word)
+                words.add(word)
         i+=1
     i=0       
     for sentence in answers0:
         for word in answers0[i]:
             if word not in words:
-                words.append(word)
+                words.add(word)
         i+=1
-        
-    
     used=open(glovepath2,'w')
-    
-    with open(glovepath,'r') as f:
+    with open(GLOVEPATH,'r') as f:
         for line in f:
             word=line.split(' ',1)[0]
             if word in words:
-    #            print 'found',word
+                print 'found',word
                 used.write(line)
                 words.remove(word)
     used.close()
     return
-    
-    
-    
-    
-def saveArrays(qa,a1a,a0a,ans1,ans0):
-    np.savetxt('data/qarray.txt',qa)
-    np.savetxt('data/a1rray.txt',a1a)
-    np.savetxt('data/a0rray.txt',a0a)
-    np.savetxt('data/ans1.txt',ans1)
-    np.savetxt('data/ans0.txt',ans0)
-    return
 
-def loadArrays():
-    qa=np.loadtxt('data/qarray.txt')
-    a1a=np.loadtxt('data/a1rray.txt')
-    a0a=np.loadtxt('data/a0rray.txt')
-    ans1=np.loadtxt('data/ans1.txt')
-    ans0=np.loadtxt('data/ans0.txt')
-    return (qa,a1a,a0a,ans1,ans0)
+def saveArrays(qa,a1a,a0a,ans1,ans0,pqa,pa1a,pa0a,pans1,pans0):
+    np.savetxt(pqa,qa)
+    np.savetxt(pa1a,a1a)
+    np.savetxt(pa0a,a0a)
+    np.savetxt(pans1,ans1)
+    np.savetxt(pans0,ans0)
+    return
+    
+def loadArrays(qa,a1a,a0a):
+    qa=np.loadtxt(qa)
+    a1a=np.loadtxt(a1a)
+    a0a=np.loadtxt(a0a)
+    return (qa,a1a,a0a)
+#def loadArrays(qa,a1a,a0a,ans1,ans0):
+#    qa=np.loadtxt(qa)
+#    a1a=np.loadtxt(a1a)
+#    a0a=np.loadtxt(a0a)
+#    ans1=np.loadtxt(ans1)
+#    ans0=np.loadtxt(ans0)
+#    return (qa,a1a,a0a,ans1,ans0)
     

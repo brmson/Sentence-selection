@@ -5,32 +5,37 @@ Created on Tue Jul 07 22:27:33 2015
 @author: Silvicek
 """
 
+from vecfromtext import *
+from bow import *
+from basicgrad import *
 import numpy as np
-#import scipy as sp
-#from sklearn.metrics import log_loss
-#import matplotlib as mpl
-#import scipy.special as s
+import pickle
+from sklearn import linear_model
 
-from vecfromtext import arraysFromQA,loadArrays
-from basicgrad import mrr,ttlists,testGrad
+#==================load=================
+ans1=np.loadtxt(PANS1).astype(int)
+ans0=np.loadtxt(PANS0).astype(int)
+tans1=np.loadtxt(PTANS1).astype(int)
+tans0=np.loadtxt(PTANS0).astype(int)
+trainlist = pickle.load( open( "data/trainlist.p", "rb" ) )
+testlist = pickle.load( open( "data/testlist.p", "rb" ) )
+(x,y,xtest,ytest)=countWords(trainlist,testlist,ans1,ans0,tans1,tans0)
+print 'data loaded'
+#=======================================
 
-
-#(quest,a1,a0,ans1,ans0)=arraysFromQA()
-
-
-#################################################    
-(qa,a1a,a0a,ans1,ans0)=loadArrays()
-(trainlist,testlist)=ttlists(qa,a1a,a0a,ans1,ans0)  
+#=================unigram===============
+b=np.loadtxt('data/b64.txt')
+M=np.loadtxt('data/M64.txt')
+print 'best MRR unigram:',mrr(M,b,testlist)
 M=np.random.normal(0,0.01,(50,50))
-b=-0.00001    
-b=np.loadtxt('data/b70basicgrad.txt')
-M=np.loadtxt('data/M70basicgrad.txt')
+b=-0.0001
+(M,b)=testGrad(M,b,trainlist,testlist)
+print 'MRR unigram:',mrr(M,b,testlist)
+#=======================================
 
-#(M,b)=testGrad(M,b,trainlist,testlist)
-print 'mrr test:',mrr(M,b,testlist)
-#################################################
-
-
-#np.savetxt('data/M70basicgrad.txt',M)
-#np.savetxt('data/b70basicgrad.txt',b)
-
+#=============unigram+count=============
+clf = linear_model.LogisticRegression(C=100, penalty='l2', tol=1e-5)
+clf.fit(x, y)
+tcounttest=clf.predict_proba(xtest)
+print 'MRR unigram+count',mrrcount(tcounttest[:,1],ytest,ans1,ans0)
+#=======================================
