@@ -5,37 +5,28 @@ Created on Wed Jul 08 18:15:54 2015
 @author: Silvicek
 """
 import numpy as np
+import pickle
 
-TQPATH='data/jacana/Test.Question.POSInput'
-TAPATH1='data/jacana/Test.Positive-J.POSInput'
-TAPATH0='data/jacana/Test.Negative-T.POSInput'
-QPATH='data/jacana/Train1-100.Question.POSInput'
-APATH1='data/jacana/Train1-100.Positive-J.POSInput'
-APATH0='data/jacana/Train1-100.Negative-T.POSInput'
-GLOVEPATH='data/glovewiki.txt'
-GLOVEPATH2='data/tusedembed.txt'
-PTQA='data/tqarray.txt'
-PTA1A='data/ta1rray.txt'
-PTA0A='data/ta0rray.txt'
-PTANS1='data/tans1.txt'
-PTANS0='data/tans0.txt'
-PQA='data/qarray.txt'
-PA1A='data/a1rray.txt'
-PA0A='data/a0rray.txt'
-PANS1='data/ans1.txt'
-PANS0='data/ans0.txt'
-#Returns single GV from string
-def getGloveVector(string,glovepath2):
+def getGloveDict(glovepath2):
+    """Returns discionary of used words"""
+    gloveDict = dict()
     with open(glovepath2,'r') as f:
         for line in f:
             word=line.split(' ',1)[0]
-            if word==string:
-                x=np.array(line.split(' ')[1:]).astype(float)
-                return x
-    return None
+            gloveDict[word] = np.array(line.split(' ')[1:]).astype(float)
+    return gloveDict
 
-#Returns qa vectors from files with jacana formating
+
 def textArrays(qpath,apath1,apath0):
+    """ Returns qa text vectors from files with jacana formating.
+    Text == array of tokens.
+    It is a tuple of:
+      * a list of question texts
+      * a list of texts of all correct answers (across all questions)
+      * a list of texts of all incorrect answers
+      * for each question, #of correct answers (used for computing the index in list of all correct answers)
+      * for each question, #of incorrect answers
+    """
     questions=[]
     with open(qpath,'r') as f:
         for line in f:
@@ -75,8 +66,9 @@ def textArrays(qpath,apath1,apath0):
                 i=0
     return (questions,answers1,answers0,ans1,ans0)
 
-#Creates smaller Glove-vector file with used words only
-def shortGlove(questions,answers1,answers0,glovepath2):                
+def shortGlove(questions,answers1,answers0,glovepath_in,glovepath_out):                
+    """ From a full Glove dictionary (glovepath2),
+    creates smaller Glove-vector file with used words only """
     i=0
     words=set()
     for sentence in questions:
@@ -96,8 +88,8 @@ def shortGlove(questions,answers1,answers0,glovepath2):
             if word not in words:
                 words.add(word)
         i+=1
-    used=open(glovepath2,'w')
-    with open(GLOVEPATH,'r') as f:
+    used=open(glovepath_out,'w')
+    with open(glovepath_in,'r') as f:
         for line in f:
             word=line.split(' ',1)[0]
             if word in words:
@@ -119,12 +111,10 @@ def loadArrays(qa,a1a,a0a):
     qa=np.loadtxt(qa)
     a1a=np.loadtxt(a1a)
     a0a=np.loadtxt(a0a)
-    return (qa,a1a,a0a)
-#def loadArrays(qa,a1a,a0a,ans1,ans0):
-#    qa=np.loadtxt(qa)
-#    a1a=np.loadtxt(a1a)
-#    a0a=np.loadtxt(a0a)
-#    ans1=np.loadtxt(ans1)
-#    ans0=np.loadtxt(ans0)
-#    return (qa,a1a,a0a,ans1,ans0)
+    return (qa,a1a,a0a) 
     
+def loadList(LISTPATH,PANS1,PANS0):
+    ans1=np.loadtxt(PANS1).astype(int)
+    ans0=np.loadtxt(PANS0).astype(int)
+    li = pickle.load( open( LISTPATH, "rb" ) )
+    return (li,ans0,ans1)

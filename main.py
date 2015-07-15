@@ -12,6 +12,19 @@ import numpy as np
 import pickle
 from sklearn import linear_model
 
+
+#==================load=================
+ans1=np.loadtxt(PANS1).astype(int)
+ans0=np.loadtxt(PANS0).astype(int)
+tans1=np.loadtxt(PTANS1).astype(int)
+tans0=np.loadtxt(PTANS0).astype(int)
+trainlist = pickle.load( open( "data/trainlist.p", "rb" ) )
+testlist = pickle.load( open( "data/testlist.p", "rb" ) )
+(x,y,xtest,ytest)=countWords(trainlist,testlist,ans1,ans0,tans1,tans0)
+print 'data loaded'
+#=======================================
+
+
 #==================load=================
 ans1=np.loadtxt(PANS1).astype(int)
 ans0=np.loadtxt(PANS0).astype(int)

@@ -45,3 +45,5 @@ data/jacana/pokus.txt
 data/glovewiki.txt
 *.pyc
 untitled0.py
+/.project
+/io.py
