@@ -16,9 +16,9 @@ Preprocessing (not required):
   * Run save.py first with updated filepath constants(const.py) if you have different dataset(requires jacana formating)
 
 Train and test:
-  * Run train.py for training from TREC TRAIN dataset and testing from TREC TEST dataset
+  * Run train.py for training from TREC TRAIN dataset and testing from TREC TEST dataset (generates truth.txt and res.txt, to evaluate run trec_eval with arguments -a truth.txt res.txt)
 
 TODO:
   * CNN instead of bag of words unigram averaging for aggregate embeddings.
   * Train on Yao's TRAIN-ALL.
-  * Re-evaluate using stock TREC scripts.
+  * Re-evaluate using stock TREC scripts. 
