@@ -51,7 +51,6 @@ print 'MRR unigram+count',mrrcount(tcounttest[:,1],ytest,tans1,tans0)
 
 
 #==============================================================================
-# 
 
 #def trainFromScratch(QPATH,APATH1,APATH0,GLOVEPATH2,new_dict=False):
 #    M=np.random.normal(0,0.01,(50,50))

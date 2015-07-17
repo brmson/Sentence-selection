@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib as mpl
 import scipy.special as s
 
-l=5e-3      #regularisation constant
+l=5e-3    #regularisation constant
 alpha=2e-5  #learning constant
 
 #Holds question with all its answers and T/F values as well as counted probabilities
@@ -37,6 +37,8 @@ class q(object):
     def sett(self,M,b):
         """ compute answer labels based on model M,b  """
         self.t=s.expit(z(self.q,M,self.a,b)[0])  # answer labels as estimated by the model
+    def settcount(self,results):
+        self.tcount=results
     def setCounts(self):
         """ compute counts of common words in question and each answer """
         N=len(self.y)
@@ -145,18 +147,19 @@ def mrr(M,b,li):
         q.sett(M,b)
         mrr+=1/firstTrue(q.y,q.t)
     return mrr/len(li)
-    
-#Returns MRR (used in uni+count)
-def mrrcount(t,y,ans1,ans0):
-    mrr=0.0
+
+def setRes(li,ans1,ans0,res):
     p=0
-    for i in range(0,len(ans1)):
-        qt=t[p : p+ans1[i]+ans0[i]]
-        qy=y[p : p+ans1[i]+ans0[i]]
+    for i in range(0,len(li)):
+        li[i].settcount(res[p:p+ans1[i]+ans0[i]])
         p+=ans1[i]+ans0[i]
-#        print 'poradi',firstTrue(qy,qt)
-        mrr+=1/firstTrue(qy,qt)
-#        print '+=',mrr
+    return    
+
+#Returns MRR (used in uni+count)
+def mrrcount(li,ans1,ans0):
+    mrr=0.0
+    for q in li:
+        mrr+=1/firstTrue(q.y,q.tcount)
     return mrr/len(ans1)
     
 

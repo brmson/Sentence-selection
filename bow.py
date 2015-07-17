@@ -39,5 +39,6 @@ def boxSentence(sentence,gloveDict):
         if x is not None:
             v+=x
             i+=1
-    v=v/i
+    if i!=0:
+        v=v/i
     return v

@@ -93,7 +93,7 @@ def shortGlove(questions,answers1,answers0,glovepath_in,glovepath_out):
         for line in f:
             word=line.split(' ',1)[0]
             if word in words:
-                print 'found',word
+#                print 'found',word
                 used.write(line)
                 words.remove(word)
     used.close()

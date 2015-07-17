@@ -47,3 +47,7 @@ data/glovewiki.txt
 untitled0.py
 /.project
 /io.py
+*.p
+*.POSInput
+tests.py
+data/w2v.txt
