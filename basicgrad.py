@@ -73,13 +73,14 @@ def testGrad(M,b,li):
     bestmrr=0.0
     bestM=0
     bestb=0
-    plot=np.zeros(100)
-    for i in range (0,500):
+    n_iter = 500
+    plot = np.zeros(n_iter / 5)
+    for i in range(0, n_iter):
         ggM=0
         ggb=0
         if i%5==0:
             plot[i/5]=lossAll(li,M,b)
-            print 'learning.. loss function:', plot[i/5]
+            print '[%d/%d] loss function: %.1f (bestMRR %.3f)' % (i, n_iter, plot[i/5], bestmrr)
         for q in li:
             for j in range(0,len(q.y)):
                 (gM,gb)=grad(q.y[j],q.q,M,np.transpose(np.array(q.a[:,j],ndmin=2)),b)
