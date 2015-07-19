@@ -61,4 +61,7 @@ def train(LISTPATH,PANS1,PANS0,TLISTPATH,PTANS1,PTANS0):
 
 
 if __name__ == "__main__":
+    # Seed always to the same number to get reproducible models
+    np.random.seed(17151713)
+
     (M, b, w) = train(LISTPATH, PANS1, PANS0, TLISTPATH, PTANS1, PTANS0)
