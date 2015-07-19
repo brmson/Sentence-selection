@@ -9,6 +9,7 @@ Created on Wed Jul 15 16:17:03 2015
 from basicgrad import getInputs,mrrcount,mrr,testGrad,setRes
 from const import *
 import numpy as np
+import pickle
 from sklearn import linear_model
 from vecfromtext import loadList
 
@@ -30,21 +31,32 @@ def train(LISTPATH,PANS1,PANS0,TLISTPATH,PTANS1,PTANS0):
     (trainlist,ans1,ans0)=loadList(LISTPATH,PANS1,PANS0)
     (testlist,tans1,tans0)=loadList(TLISTPATH,PTANS1,PTANS0)
     print 'data loaded'
+
     M=np.random.normal(0,0.01,(50,50))
     b=-0.0001
     (M,b)=testGrad(M,b,trainlist)
 #    M=np.loadtxt('data/M77.txt')
 #    b=np.loadtxt('data/b77.txt')
+
     print 'MMR after unigram learning:',mrr(M,b,testlist)
+
+    pickle.dump((M, b), open("unigram-Mb.pickle", "wb"))
+    print 'pickled unigram-Mb.pickle'
+
+    # XXX: This has a sideeffect, setting resolutions in trainlist
     mrr(M,b,trainlist)
+
     (x,y)=getInputs(trainlist,ans1,ans0)
     (xtest,ytest)=getInputs(testlist,tans1,tans0)
     clf = linear_model.LogisticRegression(C=100, penalty='l2', tol=1e-5,solver='lbfgs')
     clf.fit(x, y)
+
     tcounttest=clf.predict_proba(xtest)
     setRes(testlist,tans1,tans0,tcounttest[:,1])
     print 'MRR unigram+count',mrrcount(testlist,tans1,tans0)
+
     trecEval(testlist)
+
     return (M,b,clf.get_params())
 
 
