@@ -6,7 +6,7 @@ Created on Sat Jul 11 09:49:42 2015
 @author: Silvicek
 """
 import numpy as np
-import matplotlib as mpl
+import matplotlib.pyplot as mpl
 import scipy.special as s
 
 l=5e-3    #regularisation constant
@@ -79,7 +79,7 @@ def testGrad(M,b,li):
         ggb=0
         if i%5==0:
             plot[i/5]=lossAll(li,M,b)
-            print 'learning.. loss function:',plot[i/5]
+            print 'learning.. loss function:', plot[i/5]
         for q in li:
             for j in range(0,len(q.y)):
                 (gM,gb)=grad(q.y[j],q.q,M,np.transpose(np.array(q.a[:,j],ndmin=2)),b)
@@ -92,7 +92,7 @@ def testGrad(M,b,li):
             bestmrr=curmrr
             bestM=M
             bestb=b
-    mpl.pyplot.plot(plot)
+    mpl.plot(plot)
     return(bestM,bestb)
 
 def loss(labels,q,M,a,b):
