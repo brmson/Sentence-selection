@@ -60,28 +60,5 @@ def train(LISTPATH,PANS1,PANS0,TLISTPATH,PTANS1,PTANS0):
     return (M,b,clf.get_params())
 
 
-
-(M,b,w)=train(LISTPATH,PANS1,PANS0,TLISTPATH,PTANS1,PTANS0)
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
-
-
+if __name__ == "__main__":
+    (M, b, w) = train(LISTPATH, PANS1, PANS0, TLISTPATH, PTANS1, PTANS0)
