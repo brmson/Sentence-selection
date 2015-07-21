@@ -34,9 +34,9 @@ def train(LISTPATH,PANS1,PANS0,TLISTPATH,PTANS1,PTANS0):
 
     M=np.random.normal(0,0.01,(50,50))
     b=-0.0001
-    (M,b)=testGrad(M,b,trainlist)
-#    M=np.loadtxt('data/M77.txt')
-#    b=np.loadtxt('data/b77.txt')
+#    (M,b)=testGrad(M,b,trainlist)
+    M=np.loadtxt('data/M77.txt')
+    b=np.loadtxt('data/b77.txt')
 
     print 'MMR after unigram learning:',mrr(M,b,testlist)
 
@@ -50,13 +50,15 @@ def train(LISTPATH,PANS1,PANS0,TLISTPATH,PTANS1,PTANS0):
     (xtest,ytest)=getInputs(testlist,tans1,tans0)
     clf = linear_model.LogisticRegression(C=100, penalty='l2', tol=1e-5,solver='lbfgs')
     clf.fit(x, y)
-
     tcounttest=clf.predict_proba(xtest)
     setRes(testlist,tans1,tans0,tcounttest[:,1])
     print 'MRR unigram+count',mrrcount(testlist,tans1,tans0)
 
     trecEval(testlist)
-
+    w=clf.coef_
+    w=np.append(w,clf.intercept_);
+#    print w
+    np.savetxt('data/weights.txt',w)
     return (M,b,clf.get_params())
 
 

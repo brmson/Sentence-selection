@@ -16,37 +16,41 @@ from io import saveQlist
 
 
 
+
+
+
+
 ##==================load=================
-ans1=np.loadtxt(PANS1).astype(int)
-ans0=np.loadtxt(PANS0).astype(int)
-tans1=np.loadtxt(PTANS1).astype(int)
-tans0=np.loadtxt(PTANS0).astype(int)
-trainlist = pickle.load( open( LISTPATH, "rb" ) )
-testlist = pickle.load( open( TLISTPATH, "rb" ) )
-print 'data loaded'
+#ans1=np.loadtxt(PANS1).astype(int)
+#ans0=np.loadtxt(PANS0).astype(int)
+#tans1=np.loadtxt(PTANS1).astype(int)
+#tans0=np.loadtxt(PTANS0).astype(int)
+#trainlist = pickle.load( open( LISTPATH, "rb" ) )
+#testlist = pickle.load( open( TLISTPATH, "rb" ) )
+#print 'data loaded'
+###=======================================
+#
+##=================unigram===============
+#b=np.loadtxt('data/b64.txt')
+#M=np.loadtxt('data/M64.txt')
+#print 'best MRR unigram:',mrr(M,b,testlist)
+##M=np.random.normal(0,0.01,(50,50))
+##b=-0.0001
+##print 'random',mrr(M,b,testlist)
+##(M,b)=testGrad(M,b,trainlist,testlist)
+#b=np.loadtxt('data/b64.txt')
+#M=np.loadtxt('data/M64.txt')
 ##=======================================
-
-#=================unigram===============
-b=np.loadtxt('data/b64.txt')
-M=np.loadtxt('data/M64.txt')
-print 'best MRR unigram:',mrr(M,b,testlist)
-#M=np.random.normal(0,0.01,(50,50))
-#b=-0.0001
-#print 'random',mrr(M,b,testlist)
-#(M,b)=testGrad(M,b,trainlist,testlist)
-b=np.loadtxt('data/b64.txt')
-M=np.loadtxt('data/M64.txt')
-#=======================================
-
-#=============unigram+count=============
-mrr(M,b,trainlist)
-mrr(M,b,testlist)
-(x,y)=getInputs(trainlist,ans1,ans0)
-(xtest,ytest)=getInputs(testlist,tans1,tans0)
-clf = linear_model.LogisticRegression(C=1, penalty='l2', tol=1e-5,solver='lbfgs')
-clf.fit(x, y)
-tcounttest=clf.predict_proba(xtest)
-print 'MRR unigram+count',mrrcount(tcounttest[:,1],ytest,tans1,tans0)
+#
+##=============unigram+count=============
+#mrr(M,b,trainlist)
+#mrr(M,b,testlist)
+#(x,y)=getInputs(trainlist,ans1,ans0)
+#(xtest,ytest)=getInputs(testlist,tans1,tans0)
+#clf = linear_model.LogisticRegression(C=1, penalty='l2', tol=1e-5,solver='lbfgs')
+#clf.fit(x, y)
+#tcounttest=clf.predict_proba(xtest)
+#print 'MRR unigram+count',mrrcount(tcounttest[:,1],ytest,tans1,tans0)
 #=======================================
 
 

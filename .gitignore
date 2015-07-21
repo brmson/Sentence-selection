@@ -51,3 +51,6 @@ untitled0.py
 *.POSInput
 tests.py
 data/w2v.txt
+/truth.txt
+/res.txt
+/unigram-Mb.pickle

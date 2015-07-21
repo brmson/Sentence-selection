@@ -6,7 +6,7 @@ Created on Wed Jul 15 15:34:21 2015
 """
 
 
-
+#
 QPATH='data/jacana/Train1-100.Question.POSInput'
 APATH1='data/jacana/Train1-100.Positive-J.POSInput'
 APATH0='data/jacana/Train1-100.Negative-T.POSInput'

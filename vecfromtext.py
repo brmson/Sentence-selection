@@ -107,6 +107,15 @@ def saveArrays(qa,a1a,a0a,ans1,ans0,pqa,pa1a,pa0a,pans1,pans0):
     np.savetxt(pans0,ans0)
     return
     
+    
+def saveMb(M,b,path):
+    np.savetxt(path,M)
+    m=open(path,'a')
+    m.write("%f"%b)
+    m.close()
+    
+#saveMb(M,b,"data/Mb.txt")
+    
 def loadArrays(qa,a1a,a0a):
     qa=np.loadtxt(qa)
     a1a=np.loadtxt(a1a)

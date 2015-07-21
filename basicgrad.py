@@ -12,7 +12,6 @@ import scipy.special as s
 l=5e-3    #regularisation constant
 alpha=2e-5  #learning constant
 
-#Holds question with all its answers and T/F values as well as counted probabilities
 class q(object):
     """Holds question with all its answers and T/F values as well as counted probabilities"""
     q=[]
