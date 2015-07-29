@@ -10,7 +10,7 @@ import matplotlib.pyplot as mpl
 import scipy.special as s
 
 l=5e-3    #regularisation constant
-alpha=2e-5  #learning constant
+alpha=2e-5 #learning constant
 
 class q(object):
     """Holds question with all its answers and T/F values as well as counted probabilities"""
@@ -19,11 +19,12 @@ class q(object):
     y=[]
     t=[]
     tcount=[]
+    clues=[]
     qtext=[]
     atext=[]
     counts=[]
     idf=[]
-    def __init__(self,q,a1,a0,qtext,atext1,atext0):
+    def __init__(self,q,a1,a0,qtext,atext1,atext0,clues1=0,clues0=0):
         self.q=np.transpose(np.array(q,ndmin=2))  # question emb. (column)
         a1=np.array(a1,ndmin=2)  # correct ans. emb. (answers in rows)
         a0=np.array(a0,ndmin=2)  # incorrect
@@ -33,11 +34,14 @@ class q(object):
         self.atext=atext1
         self.atext.extend((atext0))
         self.setCounts()
+        self.setClues(clues1,clues0)
     def sett(self,M,b):
-        """ compute answer labels based on model M,b  """
+        """ compute answer labels based on model M,b """
         self.t=s.expit(z(self.q,M,self.a,b)[0])  # answer labels as estimated by the model
     def settcount(self,results):
         self.tcount=results
+    def setClues(self,clues1,clues0):
+        self.clues=np.hstack((clues1,clues0))
     def setCounts(self):
         """ compute counts of common words in question and each answer """
         N=len(self.y)
@@ -54,15 +58,38 @@ class q(object):
                             d+=1
                     self.idf[i]+=wc*np.log(N/d)
 
-def ttlist(qa,a1a,a0a,ans1,ans0,sentences):
+CPATH1="data/jacana/Clues1.txt"
+CPATH0="data/jacana/Clues0.txt"
+def ttlist(qa,a1a,a0a,ans1,ans0,sentences,clues=False):
     """Returns list of qs"""
+    clues1=np.zeros((2,sum(ans1)))
+    clues0=np.zeros((2,sum(ans0)))
+    if(clues):
+        i=0
+        with open(CPATH1,'r') as f:
+            for line in f:
+                s=line.split(" ")
+                if(i==366):
+                    print "line 366=",line
+                clues1[0,i]=float(s[0])
+                clues1[1,i]=float(s[1])
+                i+=1
+        i=0
+        with open(CPATH0,'r') as f:
+            for line in f:
+                s=line.split(" ")
+                clues0[0,i]=float(s[0])
+                clues0[1,i]=float(s[1])
+                i+=1
+                
+                
     (questions,answers1,answers0)=sentences
     li=[]
     ones=0
     zeros=0
     for i in range(0,len(ans1)):
         li.append(q(qa[i],a1a[ones:ones+ans1[i]],a0a[zeros:zeros+ans0[i]],questions[i],
-                    answers1[ones:ones+ans1[i]],answers0[zeros:zeros+ans0[i]]))
+                    answers1[ones:ones+ans1[i]],answers0[zeros:zeros+ans0[i]],clues1[:,ones:ones+ans1[i]],clues0[:,zeros:zeros+ans0[i]]))
         ones+=ans1[i]
         zeros+=ans0[i]
     return li
@@ -125,6 +152,7 @@ def firstTrue(y,t):
     li=[]
     for i in range(0,len(y)):
         li.append(yt(y[i],t[i]))
+    li.reverse()
     li.sort(key=lambda x: x.t,reverse=True)
     i=0
     for item in li:
@@ -174,3 +202,14 @@ def getInputs(li,ans1,ans0):
         poz+=len(q.y)
     return (x,y)
 
+def getInputsClues(li,ans1,ans0):
+    y=np.zeros(sum(ans1)+sum(ans0))
+    x=np.zeros((len(y),3))
+    poz=0
+    for q in li:
+        for i in range(0,len(q.y)):
+            x[poz+i]=[q.t[i],q.idf[i],q.clues[0,i]]
+#            x[poz+i]=[q.t[i],q.counts[i],q.idf[i]]
+            y[poz+i]=q.y[i]
+        poz+=len(q.y)
+    return (x,y)

@@ -6,10 +6,13 @@ Created on Wed Jul 15 15:34:21 2015
 """
 
 
-#
+##
 QPATH='data/jacana/Train1-100.Question.POSInput'
 APATH1='data/jacana/Train1-100.Positive-J.POSInput'
 APATH0='data/jacana/Train1-100.Negative-T.POSInput'
+#QPATH='data/jacana/Q.txt'
+#APATH1='data/jacana/P.txt'
+#APATH0='data/jacana/N.txt'
 #QPATH='data/jacana/Train1-2393.Question.POSInput'
 #APATH1='data/jacana/Train1-2393.Positive-M.POSInput'
 #APATH0='data/jacana/Train1-2393.Negative-M.POSInput'

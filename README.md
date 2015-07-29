@@ -22,6 +22,13 @@ Train and test:
 	trec_eval -a truth.txt res.txt
 
 TODO:
-  * CNN instead of bag of words unigram averaging for aggregate embeddings.
-  * Train on Yao's TRAIN-ALL.
-  * Re-evaluate using stock TREC scripts. 
+  * CNN instead of bag of words unigram averaging for aggregate embeddings. 
+
+Results (evaluated using stock TREC scripts):
+
+|                 | MRR    | MAP    |
+|-----------------|--------|--------|
+| TRAIN           | 0.7312 | 0.6551 |
+| TRAIN-ALL       | 0.7308 | 0.6566 |
+| TRAIN+count     | 0.7763 | 0.7165 |
+| TRAIN-ALL+count | 0.8128 | 0.7258 |

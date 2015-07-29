@@ -6,6 +6,7 @@ Created on Wed Jul 08 18:15:54 2015
 """
 import numpy as np
 import pickle
+import re
 
 def getGloveDict(glovepath2):
     """Returns discionary of used words"""
@@ -32,6 +33,7 @@ def textArrays(qpath,apath1,apath0):
         for line in f:
             line=line.lower()
             if line[0]!='<':
+                line=re.sub('[^0-9a-zA-Z]+',' ', line)
                 x=np.array(line.split(' ')[:-1])
                 questions.append(x)
                 
@@ -43,6 +45,7 @@ def textArrays(qpath,apath1,apath0):
             line=line.lower()
             if line[0]!='<':
                 i+=1
+                line=re.sub('[^0-9a-zA-Z]+',' ', line)
                 x=np.array(line.split(' ')[:-1])
                 answers1.append(x)
             elif line[0:2]=='</':
@@ -56,6 +59,7 @@ def textArrays(qpath,apath1,apath0):
             line=line.lower()
             if line[0]!='<':
                 i+=1
+                line=re.sub('[^0-9a-zA-Z]+',' ', line)
                 x=np.array(line.split(' ')[:-1])
                 if len(x)<1:
                     i-=1
@@ -126,4 +130,4 @@ def loadList(LISTPATH,PANS1,PANS0):
     ans1=np.loadtxt(PANS1).astype(int)
     ans0=np.loadtxt(PANS0).astype(int)
     li = pickle.load( open( LISTPATH, "rb" ) )
-    return (li,ans0,ans1)
+    return (li,ans1,ans0)
