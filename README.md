@@ -33,7 +33,7 @@ Results (evaluated using stock TREC scripts):
 | TRAIN+count     | 0.7763 | 0.7165 |
 | TRAIN-ALL+count | 0.8128 | 0.7258 |
 
-==========================================================
+
 
  Now usable for sentence and/or property selection in yodaqa.
  
