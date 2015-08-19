@@ -7,18 +7,16 @@ Created on Wed Jul 08 18:34:49 2015
 """
 from vecfromtext import getGloveDict
 import numpy as np
-
-
-VLEN=50 #glove vector length
+from const import *
 
 
 def prepForGrad(q,a1,a0,ans1,ans0,glovepath2):    
     """ Bag-of-words based embedding vectors for each sentence.
     Returns a matrix with one sentence per row. """
     gloveDict=getGloveDict(glovepath2)
-    qa=np.zeros((len(q),50))
-    a1a=np.zeros((len(a1),50))
-    a0a=np.zeros((len(a0),50))
+    qa=np.zeros((len(q),GLOVELEN))
+    a1a=np.zeros((len(a1),GLOVELEN))
+    a0a=np.zeros((len(a0),GLOVELEN))
     for i in range(0,len(q)):
         qa[i][:]=boxSentence(q[i],gloveDict)
     print 'questions embedded'
@@ -33,7 +31,7 @@ def prepForGrad(q,a1,a0,ans1,ans0,glovepath2):
 #Boxofwords for sentence
 def boxSentence(sentence,gloveDict):
     i=0
-    v=np.zeros(VLEN)
+    v=np.zeros(GLOVELEN)
     for word in sentence:
         x=gloveDict.get(word)
         if x is not None:

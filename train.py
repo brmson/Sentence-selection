@@ -6,7 +6,7 @@ Created on Wed Jul 15 16:17:03 2015
 @author: silvicek
 """
 
-from basicgrad import getInputs,mrrcount,mrr,testGrad,setRes,getInputsClues
+from basicgrad import mrrcount,mrr,setRes,getInputsClues,strictPercentage,testGrad
 from const import *
 import numpy as np
 import pickle
@@ -28,24 +28,24 @@ def trecEval(li,count=True):
     print 'trec_eval created'
     return
     
-
 def train(LISTPATH,PANS1,PANS0,TLISTPATH,PTANS1,PTANS0):
     """Unigram+word count training from saved Qlist files, returns weights, generates trec_eval documents"""
     (trainlist,ans1,ans0)=loadList(LISTPATH,PANS1,PANS0)
     (testlist,tans1,tans0)=loadList(TLISTPATH,PTANS1,PTANS0)
     print 'data loaded'
-    M=np.random.normal(0,0.01,(50,50))
-    b=-0.0001
+#    M=np.random.normal(0,0.01,(GLOVELEN,GLOVELEN))
+#    b=-0.0001
+    M=np.loadtxt('data/M77.txt')
+    b=np.loadtxt('data/b77.txt')
     (M,b)=testGrad(M,b,trainlist)
-#    M=np.loadtxt('data/M77.txt')
-#    b=np.loadtxt('data/b77.txt')
+
 
 
     x=0.0
-    for i in range(0,len(ans1)):
-        x+=float(ans1[i])/float(ans1[i]+ans0[i])
-#        print "i=",i,"ans1=",ans1[i],"ans0=",ans0[i],"%",float(ans1[i])/float(ans1[i]+ans0[i])
-    print "random mrr=",x/float(len(ans1))
+    for i in range(0,len(tans1)):
+        if (tans1[i]+tans0[i]>0):
+            x+=float(tans1[i])/float(tans1[i]+tans0[i])
+    print "random test mrr=",x/float(len(tans1))
 
 
     print 'MMR after unigram learning train:',mrr(M,b,trainlist)
@@ -57,20 +57,34 @@ def train(LISTPATH,PANS1,PANS0,TLISTPATH,PTANS1,PTANS0):
     # XXX: This has a sideeffect, setting resolutions in trainlist
     mrr(M,b,trainlist)
 
-    (x,y)=getInputs(trainlist,ans1,ans0)
-    (xtest,ytest)=getInputs(testlist,tans1,tans0)
-    clf = linear_model.LogisticRegression(C=1, penalty='l2', tol=1e-5,solver='lbfgs')
+    (x,y)=getInputsClues(trainlist,ans1,ans0)
+    print "train questions:",len(trainlist),
+    print "train sentences:",len(x)
+    (xtest,ytest)=getInputsClues(testlist,tans1,tans0)
+    print "test questions:",len(testlist),
+    print "test sentences:",len(xtest)
+    
+    
+    
+    print "% correct",100*float(sum(tans1))/float((sum(tans1)+sum(tans0)))    
+    
+    clf = linear_model.LogisticRegression(C=10, penalty='l2', tol=1e-5)
     clf.fit(x, y)
     tcounttest=clf.predict_proba(xtest)
+    counttest=clf.predict_proba(x)
+    setRes(trainlist,ans1,ans0,counttest[:,1])
     setRes(testlist,tans1,tans0,tcounttest[:,1])
-    print 'MRR unigram+count test',mrrcount(testlist,tans1,tans0)
+    print 'MRR unigram+clues train',mrrcount(trainlist,ans1,ans0)
+    print 'MRR unigram+clues test',mrrcount(testlist,tans1,tans0)
+    
+    print strictPercentage(testlist,tans1,tans0)*100,'% in the first three (test)'
+    
 
-    trecEval(testlist,False)
     w=clf.coef_
     w=np.append(w,clf.intercept_);
-#    print w
     np.savetxt('data/weights.txt',w)
     return (M,b,w)
+
 
 
 if __name__ == "__main__":
@@ -78,4 +92,5 @@ if __name__ == "__main__":
     np.random.seed(17151713)
 
     (M, b, w) = train(LISTPATH, PANS1, PANS0, TLISTPATH, PTANS1, PTANS0)
+
 

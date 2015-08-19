@@ -8,9 +8,9 @@ Created on Sat Jul 11 09:49:42 2015
 import numpy as np
 import matplotlib.pyplot as mpl
 import scipy.special as s
-
-l=5e-3    #regularisation constant
-alpha=2e-5 #learning constant
+from const import *
+l=1e-4    #regularisation constant
+alpha=5e-6 #learning constant
 
 class q(object):
     """Holds question with all its answers and T/F values as well as counted probabilities"""
@@ -50,39 +50,36 @@ class q(object):
         for i in range(0,len(self.counts)):
             for word in self.qtext:
                 wc=self.atext[i].tolist().count(word)
-                self.counts[i]+=wc
+                self.counts[i]+=wc/len(self.atext[i])
                 if wc>0:
                     d=0
                     for sentence in self.atext:
                         if word in sentence:
                             d+=1
+                            continue
                     self.idf[i]+=wc*np.log(N/d)
 
-CPATH1="data/jacana/Clues1.txt"
-CPATH0="data/jacana/Clues0.txt"
-def ttlist(qa,a1a,a0a,ans1,ans0,sentences,clues=False):
+
+def ttlist(qa,a1a,a0a,ans1,ans0,sentences,c1=False,c0=False):
     """Returns list of qs"""
     clues1=np.zeros((2,sum(ans1)))
     clues0=np.zeros((2,sum(ans0)))
-    if(clues):
+    if(c1):
         i=0
-        with open(CPATH1,'r') as f:
+        with open(c1,'r') as f:
             for line in f:
                 s=line.split(" ")
-                if(i==366):
-                    print "line 366=",line
                 clues1[0,i]=float(s[0])
-                clues1[1,i]=float(s[1])
+#                clues1[1,i]=float(s[1])
                 i+=1
         i=0
-        with open(CPATH0,'r') as f:
+        with open(c0,'r') as f:
             for line in f:
                 s=line.split(" ")
                 clues0[0,i]=float(s[0])
-                clues0[1,i]=float(s[1])
+#                clues0[1,i]=float(s[1])
                 i+=1
-                
-                
+
     (questions,answers1,answers0)=sentences
     li=[]
     ones=0
@@ -97,13 +94,11 @@ def ttlist(qa,a1a,a0a,ans1,ans0,sentences,clues=False):
 def testGrad(M,b,li):
     """Updates weights using basic gradient descent"""
     bestmrr=0.0
-    bestM=0
-    bestb=0
     n_iter = 500
     plot = np.zeros(n_iter / 5)
     for i in range(0, n_iter):
-        ggM=0
-        ggb=0
+        ggM=0.0
+        ggb=0.0
         if i%5==0:
             plot[i/5]=lossAll(li,M,b)
             print '[%d/%d] loss function: %.1f (bestMRR %.3f)' % (i, n_iter, plot[i/5], bestmrr)
@@ -137,7 +132,7 @@ def z(q,M,a,b):
 #Grad of loss over weights, 1 question 1 answer input
 def grad(label,q,M,a,b):
     d=s.expit(z(q,M,a,b))-label
-    gM=np.transpose(np.dot(a,q.reshape((1,50))))*d+l*M
+    gM=np.transpose(np.dot(a,q.reshape((1,GLOVELEN))))*d+l*M
     return (gM,d)
 
 class yt(object):
@@ -189,7 +184,17 @@ def mrrcount(li,ans1,ans0):
     for q in li:
         mrr+=1/firstTrue(q.y,q.tcount)
     return mrr/len(ans1)
-    
+
+
+#Returns number of questions with correct answers in the first 3 sentences
+def strictPercentage(li,ans1,ans0):
+    p=0.0
+    for q in li:
+        x=firstTrue(q.y,q.tcount)
+        if x<=3:
+            p+=1        
+    return p/len(ans1)
+ 
 
 def getInputs(li,ans1,ans0):
     y=np.zeros(sum(ans1)+sum(ans0))
@@ -204,11 +209,12 @@ def getInputs(li,ans1,ans0):
 
 def getInputsClues(li,ans1,ans0):
     y=np.zeros(sum(ans1)+sum(ans0))
-    x=np.zeros((len(y),3))
+    x=np.zeros((len(y),2))
     poz=0
     for q in li:
         for i in range(0,len(q.y)):
-            x[poz+i]=[q.t[i],q.idf[i],q.clues[0,i]]
+            x[poz+i]=[q.t[i],q.clues[0,i]]
+#            x[poz+i]=[q.t[i],q.clues[0,i],q.idf[i]]
 #            x[poz+i]=[q.t[i],q.counts[i],q.idf[i]]
             y[poz+i]=q.y[i]
         poz+=len(q.y)
