@@ -9,8 +9,8 @@ import numpy as np
 import matplotlib.pyplot as mpl
 import scipy.special as s
 from const import *
-l=1e-4    #regularisation constant
-alpha=5e-6 #learning constant
+l=5e-3    #regularisation constant
+alpha=9e-7 #learning constant
 
 class q(object):
     """Holds question with all its answers and T/F values as well as counted probabilities"""
@@ -94,7 +94,7 @@ def ttlist(qa,a1a,a0a,ans1,ans0,sentences,c1=False,c0=False):
 def testGrad(M,b,li):
     """Updates weights using basic gradient descent"""
     bestmrr=0.0
-    n_iter = 500
+    n_iter = 200
     plot = np.zeros(n_iter / 5)
     for i in range(0, n_iter):
         ggM=0.0
@@ -107,8 +107,8 @@ def testGrad(M,b,li):
                 (gM,gb)=grad(q.y[j],q.q,M,np.transpose(np.array(q.a[:,j],ndmin=2)),b)
                 ggM+=gM
                 ggb+=gb
-        M=M-alpha*ggM
-        b=b-alpha*ggb
+            M=M-alpha*ggM
+            b=b-alpha*ggb
         curmrr=mrr(M,b,li)
         if bestmrr<curmrr:
             bestmrr=curmrr
@@ -214,8 +214,8 @@ def getInputsClues(li,ans1,ans0):
     for q in li:
         for i in range(0,len(q.y)):
             x[poz+i]=[q.t[i],q.clues[0,i]]
-#            x[poz+i]=[q.t[i],q.clues[0,i],q.idf[i]]
-#            x[poz+i]=[q.t[i],q.counts[i],q.idf[i]]
+#            x[poz+i]=[q.clues[0,i],q.clues[1,i]]
+#            x[poz+i]=[q.t[i]]
             y[poz+i]=q.y[i]
         poz+=len(q.y)
     return (x,y)

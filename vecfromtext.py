@@ -117,8 +117,7 @@ def saveMb(M,b,path):
     m=open(path,'a')
     m.write("%f"%b)
     m.close()
-    
-#saveMb(M,b,"data/Mb.txt")
+#saveMb(M58,b58,"data/Mbprop.txt")
     
 def loadArrays(qa,a1a,a0a):
     qa=np.loadtxt(qa)
