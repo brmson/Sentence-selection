@@ -35,9 +35,9 @@ def train(LISTPATH,PANS1,PANS0,TLISTPATH,PTANS1,PTANS0):
     print 'data loaded'
     M=np.random.normal(0,0.01,(GLOVELEN,GLOVELEN))
     b=-0.0001
-    M=np.loadtxt('data/M58prop')
-    b=np.loadtxt('data/b58prop')
-#    (M,b)=testGrad(M,b,trainlist)
+#    M=np.loadtxt('data/M58prop')
+#    b=np.loadtxt('data/b58prop')
+    (M,b)=testGrad(M,b,trainlist)
 
 
 
