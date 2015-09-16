@@ -1,9 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 """
-Created on Wed Jul 15 16:08:28 2015
-
-@author: silvicek
+input=jacana formated text files
+output=pickled q objects
 """
 from basicgrad import ttlist
 from vecfromtext import textArrays,shortGlove

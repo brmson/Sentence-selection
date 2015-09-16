@@ -1,9 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 """
-Created on Wed Jul 15 16:17:03 2015
-
-@author: silvicek
+input=q objects
+output=trained weights
 """
 
 from basicgrad import mrrcount,mrr,setRes,getInputsClues,strictPercentage,testGrad

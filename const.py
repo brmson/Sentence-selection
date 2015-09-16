@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Jul 15 15:34:21 2015
 
-@author: silvicek
-"""
 GLOVELEN=50
 GLOVEPATH='data/glovewiki.txt'
 #GLOVEPATH='data/glove.6B.100d.txt'

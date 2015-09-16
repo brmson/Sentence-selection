@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Jul 28 12:48:29 2015
-
-@author: silvicek
+input=yodaqa csv outputs(sentences)
+output=jacana formated files for use in save.py
 """
 import os
 

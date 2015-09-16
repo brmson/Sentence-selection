@@ -1,16 +1,14 @@
 from __future__ import division
 # -*- coding: utf-8 -*-
 """
-Created on Sat Jul 11 09:49:42 2015
-
-@author: Silvicek
+contains most of the important learning and evaluating functions
 """
 import numpy as np
 import matplotlib.pyplot as mpl
 import scipy.special as s
 from const import *
 l=5e-3    #regularisation constant
-alpha=9e-7 #learning constant
+alpha=1e-7 #learning constant
 
 class q(object):
     """Holds question with all its answers and T/F values as well as counted probabilities"""

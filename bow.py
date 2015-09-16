@@ -1,10 +1,6 @@
 from __future__ import division
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Jul 08 18:34:49 2015
 
-@author: Silvicek
-"""
 from vecfromtext import getGloveDict
 import numpy as np
 from const import *
