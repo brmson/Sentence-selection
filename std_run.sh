@@ -1,5 +1,12 @@
 #!/bin/bash
-if [[ $1=='props' ]]
+props=false
+if [ "$1" = "-p" ]; then
+props=true
+shift; 
+fi
+path=$1
+cp -a "$1." "data/curated-train"
+if [[ props ]]
 then
 echo 'Running property-reparse'
 python reparseprops.py

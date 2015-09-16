@@ -89,7 +89,7 @@ def ttlist(qa,a1a,a0a,ans1,ans0,sentences,c1=False,c0=False):
         zeros+=ans0[i]
     return li
     
-def testGrad(M,b,li):
+def testGrad(M,b,li,idx):
     """Updates weights using basic gradient descent"""
     bestmrr=0.0
     n_iter = 200
@@ -99,12 +99,13 @@ def testGrad(M,b,li):
         ggb=0.0
         if i%5==0:
             plot[i/5]=lossAll(li,M,b)
-            print '[%d/%d] loss function: %.1f (bestMRR %.3f)' % (i, n_iter, plot[i/5], bestmrr)
+            print '[%d/%d] loss function: %.1f (bestMRR %.3f) Thread number %d' % (i, n_iter, plot[i/5], bestmrr, idx)
         for q in li:
-            for j in range(0,len(q.y)):
-                (gM,gb)=grad(q.y[j],q.q,M,np.transpose(np.array(q.a[:,j],ndmin=2)),b)
-                ggM+=gM
-                ggb+=gb
+            labels=q.y
+#                np.transpose(np.array(q.a[:,j],ndmin=2))
+            (gM,gb)=grad(labels,q.q,M,q.a,b)
+            ggM+=gM
+            ggb+=gb
             M=M-alpha*ggM
             b=b-alpha*ggb
         curmrr=mrr(M,b,li)
@@ -128,10 +129,13 @@ def z(q,M,a,b):
     return np.dot(np.dot(np.transpose(q),M),a)+b
 
 #Grad of loss over weights, 1 question 1 answer input
-def grad(label,q,M,a,b):
-    d=s.expit(z(q,M,a,b))-label
-    gM=np.transpose(np.dot(a,q.reshape((1,GLOVELEN))))*d+l*M
-    return (gM,d)
+def grad(labels,q,M,anss,b):
+    d=np.reshape(s.expit(z(q,M,anss,b)),(len(labels),))-labels
+    gM=0
+#    gb=0
+    for i in range(0,len(d)):
+        gM+=np.transpose(np.dot(np.reshape(anss[:,i],(GLOVELEN,1)),q.reshape((1,GLOVELEN))))*d[i]+l*M
+    return (gM,sum(d))
 
 class yt(object):
     y=0

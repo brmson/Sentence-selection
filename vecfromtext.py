@@ -107,13 +107,21 @@ def saveArrays(qa,a1a,a0a,ans1,ans0,pqa,pa1a,pa0a,pans1,pans0):
     np.savetxt(pans0,ans0)
     return
     
-    
-def saveMb(M,b,path):
+#    results=[trainq,trains,mrrt]
+def saveMb(M,b,path,results):
     np.savetxt(path,M)
     m=open(path,'a')
     m.write("%f"%b)
     m.close()
-#saveMb(M58,b58,"data/Mbprop.txt")
+    with open(path, "r+") as f:
+         old = f.read() # read everything in the file
+         f.seek(0) # rewind
+         f.write("\\\\Weights for property-selection feature, generated with https://github.com/brmson/Sentence-selection\n" +
+         "\\\\Trained on "+str(results[0])+" questions, "+str(results[1])+" properties\n"+
+#         "\\\\Validated on "+str(results[2])+" questions, "+str(results[3])+" properties\n"+
+         "\\\\trainMRR = "+str(results[2])+"\n" 
+#         "\\\\valMRR = "+str(results[5])+"\n"
+         +old) # write the new line before
     
 def loadArrays(qa,a1a,a0a):
     qa=np.loadtxt(qa)

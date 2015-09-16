@@ -17,6 +17,7 @@ TPPATH="data/Ptest.txt"
 TNPATH="data/Ntest.txt"
 TCPATH1="data/Clues1test.txt"
 TCPATH0="data/Clues0test.txt"
+
 def notNumber(s):
     try:
         float(s)
@@ -84,6 +85,7 @@ def reparseProps(PATH,QPATH,PPATH,NPATH,CPATH1,CPATH0):
     n.close()
     cp.close()
     cn.close()
+
 
 reparseProps(PATH,QPATH,PPATH,NPATH,CPATH1,CPATH0)
 reparseProps(TPATH,TQPATH,TPPATH,TNPATH,TCPATH1,TCPATH0)
