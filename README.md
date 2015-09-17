@@ -54,7 +54,7 @@ Folow these steps if you want to retrain currently used weights:
 
 In summary, use this:
 
-	./std_run.sh ../yodaqa/data/ml/embsel/propdata
+	./std_run.sh -p ../yodaqa/data/ml/embsel/propdata
 	cp data/Mbtemp.txt ../yodaqa/src/main/resources/cz/brmlab/yodaqa/analysis/rdf/Mbprop.txt
 
 ### Snapshot of results based on curated:
