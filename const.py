@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 GLOVELEN=50
-GLOVEPATH='data/glovewiki.txt'
+GLOVEPATH='resources/glove.6B.50d.txt'
 #GLOVEPATH='data/glove.6B.100d.txt'
 ##
 #QPATH='data/jacana/Train1-100.Question.POSInput'

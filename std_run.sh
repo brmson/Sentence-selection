@@ -9,6 +9,19 @@
 #
 # Example: ./std-run.sh -p ../yodaqa/data/ml/embsel/propdata/
 
+if [[ -f resources/glove.6B.50d.txt ]]
+then
+echo "Dictionary allready downloaded"
+else
+echo "Downloading dictionary"
+wget http://www-nlp.stanford.edu/data/glove.6B.50d.txt.gz
+gunzip glove.6B.50d.txt.gz
+mkdir -p resources
+mv glove.6B.50d.txt resources
+fi
+
+
+
 props=false
 if [ "$1" = "-p" ]; then
 	props=true
