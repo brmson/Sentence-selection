@@ -133,4 +133,4 @@ if __name__ == "__main__":
 
     (M, b, w, results) = train(LISTPATH, PANS1, PANS0, TLISTPATH, PTANS1, PTANS0)
 
-    saveMb(M,b,"data/Mbtemb.txt",results)
+    saveMb(M,b,"data/Mbtemp.txt",results)
