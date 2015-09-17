@@ -16,7 +16,7 @@ if [ "$1" = "-p" ]; then
 fi
 
 path=$1
-cp -a "$1." "data/curated-train"
+cp -a "$1" "data/curated-train"
 
 # Convert YodaQA-generated data to Jacana-style data
 if [[ props ]]
