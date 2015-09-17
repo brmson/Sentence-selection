@@ -86,7 +86,7 @@ def train(LISTPATH,PANS1,PANS0,TLISTPATH,PTANS1,PTANS0):
     pickle.dump((M, b), open("unigram-Mb.pickle", "wb"))
 
     # XXX: This has a sideeffect, setting resolutions in trainlist
-    mrr(M,b,trainlist)
+    print('Mb MRR on train:', mrr(M,b,trainlist))
 #    mrr(M,b,testlist)
 
     (x,y)=getInputsClues(trainlist,ans1,ans0)
