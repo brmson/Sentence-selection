@@ -39,8 +39,8 @@ def cross_validate_one(idx):
         random.shuffle(trainlist)
         trainvalborder=len(trainlist)*(threads-2)/(threads-1)
         (M2,b2)=testGrad(M,b,trainlist[:trainvalborder],idx)
-        print 'MMR after unigram learning train(idx=',idx,'):',mrr(M,b,trainlist)
-        res=mrr(M,b,trainlist[trainvalborder:])
+        print 'MMR after unigram learning train(idx=',idx,'):',mrr(M2,b2,trainlist)
+        res=mrr(M2,b2,trainlist[trainvalborder:])
         print 'MMR after unigram learning val(idx=',idx,'):',res
     return (res,M2,b2)
     
@@ -48,9 +48,9 @@ def cross_validate_all(M,b,trainlist):
     global gdata
     threads=5
     gdata=(M,b,trainlist,threads+1)
-    pool = Pool()
     crossvalmrr=0
     i=0
+    pool = Pool()
     for res in pool.imap(cross_validate_one,range(threads+1)):
         mrr,M,b=res
         crossvalmrr+=mrr

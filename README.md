@@ -39,7 +39,6 @@ Property selection in yodaqa/moviesC:
 
 Folow these steps if you want to retrain currently used weights:
 * run yodaqa (for example train-and-eval.sh) with system property cz.brmlab.yodaqa.dump\_property\_labels set as path to folder where you want to generate the data
-* copy the data to curated-train and curated-test folders located in sentence-selection project (or you can change the path name in reparseprops.py)
 * run './std_run.sh -p \[path\]' (path is the directory of dumped yodaqa files). You can alter the training constants in basicgrad.py and train.py
 * if you are happy with the results, you can copy and rename generated file Mbtemp.txt located in data folder to yodaqa/src/main/resources/cz/brmlab/yodaqa/analysis/rdf/Mbprop.txt
 
@@ -58,7 +57,6 @@ Sentence selection on yodaqa/curated:
 
 Folow these steps if you want to retrain currently used weights:
 * run yodaqa (for example train-and-eval.sh) with system property cz.brmlab.yodaqa.jacana set as path to folder where you want to generate the data
-* copy the data to curated-train and curated-test folders located in sentence-selection project (or you can change the path name in reparse.py)
 * run './std_run.sh \[path\]' (path is the directory of dumped yodaqa files). You can alter the training constants in basicgrad.py and train.py
 * if you are happy with the results, you can copy and rename generated file Mbtemp.txt located in data folder to yodaqa/src/main/resources/cz/brmlab/yodaqa/analysis/passextract/Mb.txt
 
