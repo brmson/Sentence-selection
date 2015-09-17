@@ -8,6 +8,7 @@ output=jacana formated files for use in save.py
 
 import os
 import sys
+import glob
 
 QPATH="data/Qtrain.txt"
 PPATH="data/Ptrain.txt"
@@ -30,7 +31,6 @@ def reparse(PATH,QPATH,PPATH,NPATH,CPATH1,CPATH0):
     cn=open(CPATH0,'w')
     
     qnum=0
-    for file in os.listdir(PATH):
         path=PATH+"/"+file
         i=0
         p.write("<A "+str(qnum)+">\n")
