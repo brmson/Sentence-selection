@@ -14,18 +14,16 @@ if [ "$1" = "-p" ]; then
 	props=true
 	shift
 fi
-
 path=$1
-cp -a "$1" "data/curated-train"
 
 # Convert YodaQA-generated data to Jacana-style data
 if [[ props ]]
 then
 	echo 'Running property-reparse'
-	python reparseprops.py
+	python reparseprops.py "$path"
 else
 	echo 'Running sentence-reparse'
-	python reparse.py
+	python reparse.py "$path"
 fi
 
 # Convert Jacana-style data to pickled Python data structures

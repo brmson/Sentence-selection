@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-input=yodaqa csv outputs(properties)
+Usage: reparseprops.py DATAPATH
+
+input=yodaqa csv outputs (properties)
 output=jacana formated files for use in save.py
 """
-import os
 
-PATH="data/curated-train"
+import os
+import sys
+
 QPATH="data/Qtrain.txt"
 PPATH="data/Ptrain.txt"
 NPATH="data/Ntrain.txt"
@@ -87,5 +90,6 @@ def reparseProps(PATH,QPATH,PPATH,NPATH,CPATH1,CPATH0):
     cn.close()
 
 
+PATH = sys.argv[1]
 reparseProps(PATH,QPATH,PPATH,NPATH,CPATH1,CPATH0)
 reparseProps(TPATH,TQPATH,TPPATH,TNPATH,TCPATH1,TCPATH0)

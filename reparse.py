@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-input=yodaqa csv outputs(sentences)
+Usage: reparse.py DATAPATH
+
+input=yodaqa csv outputs (sentences)
 output=jacana formated files for use in save.py
 """
-import os
 
-PATH="data/curated-train"
+import os
+import sys
+
 QPATH="data/Qtrain.txt"
 PPATH="data/Ptrain.txt"
 NPATH="data/Ntrain.txt"
@@ -58,7 +61,8 @@ def reparse(PATH,QPATH,PPATH,NPATH,CPATH1,CPATH0):
     n.close()
     cp.close()
     cn.close()
-    
-    
+
+
+PATH = sys.argv[1]
 reparse(PATH,QPATH,PPATH,NPATH,CPATH1,CPATH0)
 reparse(TPATH,TQPATH,TPPATH,TNPATH,TCPATH1,TCPATH0)
