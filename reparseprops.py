@@ -14,12 +14,12 @@ PPATH="data/Ptrain.txt"
 NPATH="data/Ntrain.txt"
 CPATH1="data/Clues1train.txt"
 CPATH0="data/Clues0train.txt"
-TPATH="data/curated-test"
-TQPATH="data/Qtest.txt"
-TPPATH="data/Ptest.txt"
-TNPATH="data/Ntest.txt"
-TCPATH1="data/Clues1test.txt"
-TCPATH0="data/Clues0test.txt"
+#TPATH="data/curated-test"
+#TQPATH="data/Qtest.txt"
+#TPPATH="data/Ptest.txt"
+#TNPATH="data/Ntest.txt"
+#TCPATH1="data/Clues1test.txt"
+#TCPATH0="data/Clues0test.txt"
 
 def notNumber(s):
     try:
@@ -92,4 +92,4 @@ def reparseProps(PATH,QPATH,PPATH,NPATH,CPATH1,CPATH0):
 
 PATH = sys.argv[1]
 reparseProps(PATH,QPATH,PPATH,NPATH,CPATH1,CPATH0)
-reparseProps(TPATH,TQPATH,TPPATH,TNPATH,TCPATH1,TCPATH0)
+#reparseProps(TPATH,TQPATH,TPPATH,TNPATH,TCPATH1,TCPATH0)
