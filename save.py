@@ -10,6 +10,22 @@ from bow import prepForGrad
 import pickle
 import numpy as np
 from const import *
+
+def trecEval(li,count=True):
+    truth=open('truth.txt','w')
+    res=open('res.txt','w')
+    for i in range(0,len(li)):
+        for j in range(0,len(li[i].y)):
+            truth.write(' '.join(map(str,(i,0,j,int(li[i].y[j]),'\n'))))
+            if (count):
+                res.write(' '.join(map(str,(i,0,j,1,li[i].tcount[j],'glove','\n'))))
+            else:
+                res.write(' '.join(map(str,(i,0,j,1,li[i].t[j],'glove','\n'))))
+    truth.close()
+    res.close()
+    print 'trec_eval created'
+    return
+
 def saveQlist(QPATH,APATH1,APATH0,GLOVEPATH,GLOVEPATH2,PLIST,PANS1,PANS0,new_dict=False,c1=False,c0=False):
     """From jacana formated documents of questions, true answers, false answers
     saves list of Qs to PLIST path"""   

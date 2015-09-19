@@ -107,21 +107,23 @@ def saveArrays(qa,a1a,a0a,ans1,ans0,pqa,pa1a,pa0a,pans1,pans0):
     np.savetxt(pans0,ans0)
     return
     
-#    results=[trainq,trains,mrrt]
+#results=[q_num,prop_num,crossmrr,mrrs,l,alpha,trainmrr]
 def saveMb(M,b,path,results):
     np.savetxt(path,M)
     m=open(path,'a')
     m.write("%f"%b)
     m.close()
     with open(path, "r+") as f:
-         old = f.read() # read everything in the file
-         f.seek(0) # rewind
+         old = f.read()
+         f.seek(0)
          f.write("\\\\Weights for property-selection feature, generated with https://github.com/brmson/Sentence-selection\n" +
          "\\\\Trained on "+str(results[0])+" questions, "+str(results[1])+" properties\n"+
-#         "\\\\Validated on "+str(results[2])+" questions, "+str(results[3])+" properties\n"+
-         "\\\\trainMRR = "+str(results[2])+"\n" 
-#         "\\\\valMRR = "+str(results[5])+"\n"
-         +old) # write the new line before
+         "\\\\Cross-validation MRRs: "+str(results[3])+"\n"+
+         "\\\\Mean cross-validation MRR "+str(results[2])+"\n"+  
+         "\\\\MRR on the whole training set: "+str(results[6])+"\n"+
+         "\\\\Learning constant alpha = "+str(results[5])+"\n"+
+         "\\\\Regularisation constant l = "+str(results[4])+"\n"+
+         old)
     
 def loadArrays(qa,a1a,a0a):
     qa=np.loadtxt(qa)

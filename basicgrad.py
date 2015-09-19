@@ -4,11 +4,15 @@ from __future__ import division
 contains most of the important learning and evaluating functions
 """
 import numpy as np
-import matplotlib.pyplot as mpl
+#import matplotlib.pyplot as mpl
 import scipy.special as s
 from const import *
-l=5e-3    #regularisation constant
-alpha=1e-7 #learning constant
+
+def trainConsts():
+    """If you want to experiment with training constants, change them here"""
+    l=5e-3    #regularisation constant
+    alpha=1e-7 #learning constant
+    return(l,alpha)
 
 class q(object):
     """Holds question with all its answers and T/F values as well as counted probabilities"""
@@ -91,15 +95,16 @@ def ttlist(qa,a1a,a0a,ans1,ans0,sentences,c1=False,c0=False):
     
 def testGrad(M,b,li,idx):
     """Updates weights using basic gradient descent"""
+    l,alpha=trainConsts()
     bestmrr=0.0
     n_iter = 200
-    plot = np.zeros(n_iter / 5)
+    plot = np.zeros(int(n_iter / 5))
     for i in range(0, n_iter):
         ggM=0.0
         ggb=0.0
         if i%5==0:
-            plot[i/5]=lossAll(li,M,b)
-            print '[%d/%d] loss function: %.1f (bestMRR %.3f) Thread number %d' % (i, n_iter, plot[i/5], bestmrr, idx)
+            plot[int(i/5)]=lossAll(li,M,b)
+            print '[%d/%d] loss function: %.1f (bestMRR %.3f) Thread number %d' % (i, n_iter, plot[int(i/5)], bestmrr, idx)
         for q in li:
             labels=q.y
 #                np.transpose(np.array(q.a[:,j],ndmin=2))
@@ -113,13 +118,14 @@ def testGrad(M,b,li,idx):
             bestmrr=curmrr
             bestM=M
             bestb=b
-    mpl.plot(plot)
+#    mpl.plot(plot)
     return(bestM,bestb)
 
 def loss(labels,q,M,a,b):
     """#Loss cross-entropy function with regularization
     inputs: labels-row array of {0.1};q-column vector;M-matrix;a-row of columns;b-scalar
     """
+    l,alpha=trainConsts()
     x=-(labels*np.log(s.expit(z(q,M,a,b)))+(1-labels)*np.log(1-s.expit(z(q,M,a,b))))
     return np.sum(x)+l/2*(np.sum(M**2)+b**2)
 
@@ -130,6 +136,7 @@ def z(q,M,a,b):
 
 #Grad of loss over weights, 1 question 1 answer input
 def grad(labels,q,M,anss,b):
+    l,alpha=trainConsts()
     d=np.reshape(s.expit(z(q,M,anss,b)),(len(labels),))-labels
     gM=0
 #    gb=0
