@@ -14,7 +14,7 @@ then
 echo "Dictionary allready downloaded"
 else
 echo "Downloading dictionary"
-wget http://www-nlp.stanford.edu/data/glove.6B.50d.txt.gz
+wget http://pasky.or.cz/dev/brmson/glove.6B.50d.txt.gz
 gunzip glove.6B.50d.txt.gz
 mkdir -p resources
 mv glove.6B.50d.txt resources
